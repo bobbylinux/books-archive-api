@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>online.bobbylinux</groupId>
-	<artifactId>bobbybook</artifactId>
+	<artifactId>books-archive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bobbybook</name>
-	<description>Demo project for Spring Boot</description>
+	<name>books-archive</name>
+	<description>API for my personal book collection</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -34,6 +34,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 
 		<dependency>
