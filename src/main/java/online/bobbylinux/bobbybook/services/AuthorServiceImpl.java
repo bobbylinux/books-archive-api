@@ -30,13 +30,6 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public Page<AuthorResponse> getAllAuthorsPaginated(int page, int size) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	public List<AuthorResponse> searchAuthor(String searchString) {
 		List<Author> authors = authorRepository.searchAuthors(searchString);
 		return authors.stream()
@@ -51,9 +44,9 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public void createAuthor(String firstName, String lastName) {
+	public Author createAuthor(String firstName, String lastName) {
 		Author author = new Author(firstName, lastName);
-		authorRepository.save(author);
+		return authorRepository.save(author);
 	}
 
 	@Override

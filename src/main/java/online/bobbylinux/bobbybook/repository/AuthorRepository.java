@@ -12,9 +12,8 @@ import online.bobbylinux.bobbybook.entities.Author;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-	Page<Author> findAllPaginated(Pageable pageable);
 
 	@Query("SELECT a FROM Author a WHERE " + "LOWER(a.firstName) LIKE LOWER(CONCAT('%', :searchString, '%')) OR "
 			+ "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :searchString, '%'))")
-	List<Author> searchAuthors(@Param("searchText") String searchString);
+	List<Author> searchAuthors(@Param("searchString") String searchString);
 }
