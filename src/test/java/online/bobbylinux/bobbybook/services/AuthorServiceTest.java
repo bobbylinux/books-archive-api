@@ -1,36 +1,127 @@
 package online.bobbylinux.bobbybook.services;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
+import online.bobbylinux.bobbybook.dto.AuthorResponse;
 import online.bobbylinux.bobbybook.entities.Author;
 import online.bobbylinux.bobbybook.repository.AuthorRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthorServiceTest {
 	@Mock
-    private AuthorRepository authorRepository;
-	
+	private AuthorRepository authorRepository;
+
 	@InjectMocks
-    private AuthorServiceImpl authorService;
+	private AuthorServiceImpl authorService;
+
+	@Test
+	void testGetAuthor() throws NotFoundException {
+	    Long id = 1L;
+        Author author = new Author("Stephen", "King");
+        author.setId(id);
+
+        when(authorRepository.findById(id)).thenReturn(Optional.of(author));
+        
+        AuthorResponse result = authorService.getAuthor(id);
+        
+        assertNotNull(result);
+        assertEquals("Stephen", result.first_name());
+        assertEquals("King", result.last_name());
+
+        verify(authorRepository, times(1)).findById(id);
+	}
 	
 	@Test
-    void testCreateAuthor() {
-        Author author = new Author("Stephen", "King");
-        when(authorRepository.save(any(Author.class))).thenReturn(author);
+	void testSearchAuthor() {
+		String searchString = "king";
+        Author author01 = new Author("Stephen", "King");
+        author01.setId(1L);
+        Author author02 = new Author("George", "Martin");
+        author02.setId(2L);
+        Author author03 = new Author("Simmon", "Askinga");
+        author03.setId(3L);
+        Author author04 = new Author("Badkinga", "Aliussy");
+        author04.setId(4L);
+        
+        List<Author> authors = new ArrayList<Author>();
+        authors.add(author01);
+        authors.add(author03);
+        authors.add(author04);
+        
+        when(authorRepository.searchAuthors(searchString)).thenReturn(authors);
 
-        Author result = authorService.createAuthor("Stephen", "King");
-
+        List<Author> result = authorRepository.searchAuthors(searchString);
+        
         assertNotNull(result);
-        verify(authorRepository, times(1)).save(author);
-    }
+        
+        assertEquals(3, result.size());
+        
+        assertTrue(result.contains(author01));
+        assertTrue(result.contains(author03));
+        assertTrue(result.contains(author04));
+        
+        verify(authorRepository, times(1)).searchAuthors(searchString);
+	}
+	
+	@Test
+	void testCreateAuthor() {
+		Author author = new Author("Stephen", "King");
+		when(authorRepository.save(any(Author.class))).thenReturn(author);
+
+		AuthorResponse result = authorService.createAuthor("Stephen", "King");
+
+		assertNotNull(result);
+		assertEquals(result.first_name(), "Stephen");
+		assertEquals(result.last_name(), "King");
+
+		verify(authorRepository, times(1)).save(any(Author.class));
+	}
+	
+	@Test
+	void testUpdateAuthor() throws NotFoundException {
+	    Long id = 1L;
+        Author existingAuthor = new Author("Stephen", "King");
+        existingAuthor.setId(id);
+        
+        when(authorRepository.findById(id)).thenReturn(Optional.of(existingAuthor));
+        when(authorRepository.save(any(Author.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        AuthorResponse updatedAuthor = authorService.updateAuthor(id, "Stephanus", "Kingston");
+
+        assertNotNull(updatedAuthor);
+        assertEquals("Stephanus", updatedAuthor.first_name());
+        assertEquals("Kingston", updatedAuthor.last_name());
+
+        verify(authorRepository, times(1)).findById(id);
+        verify(authorRepository, times(1)).save(existingAuthor);		
+	}
+
+	@Test
+	void testDeleteAuthor() {
+		Long id = 1L;
+		
+		authorService.deleteAuthor(id);
+		
+		verify(authorRepository).deleteById(id);
+	    verifyNoMoreInteractions(authorRepository);
+	}
+	
 }

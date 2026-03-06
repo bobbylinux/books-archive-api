@@ -24,19 +24,15 @@ public class AuthorServiceImpl implements AuthorService {
 	@Override
 	public List<AuthorResponse> getAllAuthors() {
 		List<Author> authors = authorRepository.findAll();
-		return authors.stream()
-				.map(a -> new AuthorResponse(a.getId(), a.getFirstName(), a.getLastName()))
-				.toList();
+		return authors.stream().map(a -> new AuthorResponse(a.getId(), a.getFirstName(), a.getLastName())).toList();
 	}
 
 	@Override
 	public List<AuthorResponse> searchAuthor(String searchString) {
 		List<Author> authors = authorRepository.searchAuthors(searchString);
-		return authors.stream()
-				.map(a -> new AuthorResponse(a.getId(), a.getFirstName(), a.getLastName()))
-				.toList();
+		return authors.stream().map(a -> new AuthorResponse(a.getId(), a.getFirstName(), a.getLastName())).toList();
 	}
-	
+
 	@Override
 	public AuthorResponse getAuthor(Long id) throws NotFoundException {
 		Optional<Author> author = authorRepository.findById(id);
@@ -44,27 +40,34 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public Author createAuthor(String firstName, String lastName) {
+	public AuthorResponse createAuthor(String firstName, String lastName) {
 		Author author = new Author(firstName, lastName);
-		return authorRepository.save(author);
+		Author savedAuthor = authorRepository.save(author);
+		return new AuthorResponse(savedAuthor.getId(), savedAuthor.getFirstName(), savedAuthor.getLastName());
 	}
 
 	@Override
-	public void updateAuthor(Long id, String firstname, String lastName) throws NotFoundException {
+	public AuthorResponse updateAuthor(Long id, String firstName, String lastName) throws NotFoundException {
+		if (id == null) {
+			throw new IllegalArgumentException("Author Id to modify can't be null");
+		}
 		Optional<Author> author = authorRepository.findById(id);
 		if (author.isEmpty()) {
 			throw new NotFoundException();
 		}
-	
+		Author updatedAuthor = author.get();
+		updatedAuthor.setFirstName(firstName);
+		updatedAuthor.setLastName(lastName);
+		Author savedAuthor = authorRepository.save(updatedAuthor);
+		return new AuthorResponse(savedAuthor.getId(), savedAuthor.getFirstName(), savedAuthor.getLastName());
 	}
 
 	@Override
-	public void deleteAuthor(Long id) throws NotFoundException {
-		Optional<Author> author = authorRepository.findById(id);
-		if (author.isEmpty()) {
-			throw new NotFoundException();
+	public void deleteAuthor(Long id) {
+		if (id == null) {
+			throw new IllegalArgumentException("Author Id to delete can't be null");
 		}
-
+		authorRepository.deleteById(id);
 	}
 
 }

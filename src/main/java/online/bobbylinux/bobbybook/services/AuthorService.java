@@ -16,9 +16,9 @@ public interface AuthorService {
 	
 	public List<AuthorResponse> searchAuthor(String searchString);
 	
-	public Author createAuthor(String firstName, String lastName);
+	public AuthorResponse createAuthor(String firstName, String lastName);
 	
-	public void updateAuthor(Long id, String firstname, String lastName) throws NotFoundException;
+	public AuthorResponse updateAuthor(Long id, String firstName, String lastName) throws NotFoundException;
 	
 	public void deleteAuthor(Long id) throws NotFoundException;
 	
