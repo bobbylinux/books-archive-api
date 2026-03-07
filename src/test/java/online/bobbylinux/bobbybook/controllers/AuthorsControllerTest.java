@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import online.bobbylinux.bobbybook.controller.AuthorsController;
 import online.bobbylinux.bobbybook.dto.AuthorResponse;
 import online.bobbylinux.bobbybook.services.AuthorService;
-import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(AuthorsController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -27,8 +26,6 @@ public class AuthorsControllerTest {
 	@MockitoBean
 	private AuthorService authorService;
 
-	@Autowired
-	private ObjectMapper objectMapper;
 
 	@Test
 	@WithMockUser(username = "test", roles = { "USER" })
