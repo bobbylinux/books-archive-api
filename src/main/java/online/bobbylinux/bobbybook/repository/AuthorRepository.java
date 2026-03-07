@@ -14,7 +14,7 @@ import online.bobbylinux.bobbybook.entities.Author;
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
 	@Query("SELECT a FROM Author a WHERE " + "LOWER(a.firstName) LIKE LOWER(CONCAT('%', :searchString, '%')) OR "
-			+ "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :searchString, '%')) AND deletedAt IS NULL")
+			+ "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :searchString, '%')) AND deletedAt IS NULL ORDER BY lastName, firstName")
 	List<Author> searchAuthors(@Param("searchString") String searchString);
 
     @Modifying

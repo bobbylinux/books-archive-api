@@ -1,5 +1,6 @@
 package online.bobbylinux.bobbybook.controller;
 
+import java.util.List;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,12 @@ public class AuthorsController {
 	public ResponseEntity<AuthorResponse> createAuthor(@RequestParam String first_name, @RequestParam String last_name) throws NotFoundException {
 		AuthorResponse author = authorService.createAuthor(first_name, last_name);
         return ResponseEntity.status(HttpStatus.CREATED).body(author);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<AuthorResponse>> searchAuthors(@RequestParam String search_string) {
+		List<AuthorResponse> authors = authorService.searchAuthor(search_string);
+		return ResponseEntity.ok(authors);
 	}
 	
 	
