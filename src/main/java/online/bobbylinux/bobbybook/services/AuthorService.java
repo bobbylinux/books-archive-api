@@ -3,10 +3,8 @@ package online.bobbylinux.bobbybook.services;
 import java.util.List;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.data.domain.Page;
 
 import online.bobbylinux.bobbybook.dto.AuthorResponse;
-import online.bobbylinux.bobbybook.entities.Author;
 
 public interface AuthorService {
 	
