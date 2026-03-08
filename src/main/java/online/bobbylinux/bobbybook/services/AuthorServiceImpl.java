@@ -22,7 +22,7 @@ public class AuthorServiceImpl implements AuthorService {
 
 	@Override
 	public List<AuthorResponse> getAllAuthors() {
-		List<Author> authors = authorRepository.findAll();
+		List<Author> authors = authorRepository.getAllAuthors();
 		return authors.stream().map(a -> new AuthorResponse(a.getId(), a.getFirstName(), a.getLastName())).toList();
 	}
 

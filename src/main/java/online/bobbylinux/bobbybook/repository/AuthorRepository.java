@@ -29,4 +29,6 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 			+ "FROM Author a WHERE a.id = :id AND a.deletedAt IS NULL")
 	boolean existsById(@Param("id") Long id);
 
+	@Query("SELECT a FROM Author a WHERE deletedAt IS NULL ORDER BY lastName, firstName")
+	List<Author> getAllAuthors();
 }

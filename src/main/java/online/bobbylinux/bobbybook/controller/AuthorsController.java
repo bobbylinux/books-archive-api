@@ -15,7 +15,7 @@ import online.bobbylinux.bobbybook.dto.AuthorResponse;
 import online.bobbylinux.bobbybook.services.AuthorService;
 
 @RestController()
-@RequestMapping("/authors")
+@RequestMapping("${api.prefix}/authors")
 public class AuthorsController {
 	
 	private final AuthorService authorService;
@@ -37,10 +37,12 @@ public class AuthorsController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<AuthorResponse>> searchAuthors(@RequestParam String search_string) {
-		List<AuthorResponse> authors = authorService.searchAuthor(search_string);
-		return ResponseEntity.ok(authors);
+	public ResponseEntity<List<AuthorResponse>> getAuthors(@RequestParam(required = false) String search_string) {
+		List<AuthorResponse> authors;
+		if (search_string != null) {
+			authors = authorService.searchAuthor(search_string);
+			return ResponseEntity.ok(authors);
+		} 
+		return ResponseEntity.ok( authorService.getAllAuthors());
 	}
-	
-	
 }

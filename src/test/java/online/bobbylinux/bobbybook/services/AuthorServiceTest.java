@@ -81,6 +81,39 @@ public class AuthorServiceTest {
         verify(authorRepository, times(1)).searchAuthors(searchString);
 	}
 	
+    @Test
+	void testGetAllAuthors() {
+        Author author01 = new Author("Stephen", "King");
+        author01.setId(1L);
+        Author author02 = new Author("George", "Martin");
+        author02.setId(2L);
+        Author author03 = new Author("Simmon", "Askinga");
+        author03.setId(3L);
+        Author author04 = new Author("Badkinga", "Aliussy");
+        author04.setId(4L);
+        
+        List<Author> authors = new ArrayList<Author>();
+        authors.add(author01);
+        authors.add(author02);
+        authors.add(author03);
+        authors.add(author04);
+        
+        when(authorRepository.getAllAuthors()).thenReturn(authors);
+
+        List<Author> result = authorRepository.getAllAuthors();
+        
+        assertNotNull(result);
+        
+        assertEquals(4, result.size());
+        
+        assertTrue(result.contains(author01));
+        assertTrue(result.contains(author02));
+        assertTrue(result.contains(author03));
+        assertTrue(result.contains(author04));
+        
+        verify(authorRepository, times(1)).getAllAuthors();
+	}
+
 	@Test
 	void testCreateAuthor() {
 		Author author = new Author("Stephen", "King");
