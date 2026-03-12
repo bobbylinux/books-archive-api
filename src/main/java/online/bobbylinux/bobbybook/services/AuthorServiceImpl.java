@@ -14,11 +14,7 @@ import online.bobbylinux.bobbybook.repository.AuthorRepository;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 	@Autowired
-	private final AuthorRepository authorRepository;
-
-	public AuthorServiceImpl(AuthorRepository authorRepository) {
-		this.authorRepository = authorRepository;
-	}
+	private AuthorRepository authorRepository;
 
 	@Override
 	public List<AuthorResponse> getAllAuthors() {

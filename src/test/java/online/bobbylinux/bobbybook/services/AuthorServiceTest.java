@@ -85,13 +85,17 @@ public class AuthorServiceTest {
 	void testGetAllAuthors() {
         Author author01 = new Author("Stephen", "King");
         author01.setId(1L);
+        AuthorResponse authorResponse01 = new AuthorResponse(author01.getId(), author01.getFirstName(), author01.getLastName());
         Author author02 = new Author("George", "Martin");
         author02.setId(2L);
+        AuthorResponse authorResponse02 = new AuthorResponse(author02.getId(), author02.getFirstName(), author02.getLastName());
         Author author03 = new Author("Simmon", "Askinga");
         author03.setId(3L);
+        AuthorResponse authorResponse03 = new AuthorResponse(author03.getId(), author03.getFirstName(), author03.getLastName());
         Author author04 = new Author("Badkinga", "Aliussy");
         author04.setId(4L);
-        
+        AuthorResponse authorResponse04 = new AuthorResponse(author04.getId(), author04.getFirstName(), author04.getLastName());
+
         List<Author> authors = new ArrayList<Author>();
         authors.add(author01);
         authors.add(author02);
@@ -100,17 +104,16 @@ public class AuthorServiceTest {
         
         when(authorRepository.getAllAuthors()).thenReturn(authors);
 
-        List<Author> result = authorRepository.getAllAuthors();
+        List<AuthorResponse> result = authorService.getAllAuthors();
         
         assertNotNull(result);
         
         assertEquals(4, result.size());
         
-        assertTrue(result.contains(author01));
-        assertTrue(result.contains(author02));
-        assertTrue(result.contains(author03));
-        assertTrue(result.contains(author04));
-        
+        assertTrue(result.contains(authorResponse01));
+        assertTrue(result.contains(authorResponse02));
+        assertTrue(result.contains(authorResponse03));
+        assertTrue(result.contains(authorResponse04));        
         verify(authorRepository, times(1)).getAllAuthors();
 	}
 
