@@ -32,3 +32,4 @@ WHERE deleted_at IS NULL;
 
 ALTER TABLE IF EXISTS public.publishers
     OWNER to books_archive;
+

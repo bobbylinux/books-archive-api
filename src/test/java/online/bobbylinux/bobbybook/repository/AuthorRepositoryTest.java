@@ -91,11 +91,14 @@ public class AuthorRepositoryTest {
     @Transactional
 	void testUpdateAuthor() {
 		Author author = new Author("Stefan", "King");
-        Author savedAuthor= authorRepository.save(author);
-        Long id = savedAuthor.getId();
-                
-        assertTrue(authorRepository.existsById(id));
-        authorRepository.deleteById(id);
-        assertFalse(authorRepository.existsById(id));
+        Long id = authorRepository.save(author).getId();
+        Optional<Author> result = authorRepository.findById(id);
+
+        if (!result.isEmpty()) {
+            Author savedAuthor = result.get();
+            savedAuthor.setFirstName("Stephen");
+            Author updatedAuthor = authorRepository.save(savedAuthor);
+            assertEquals(savedAuthor, updatedAuthor);
+        }
 	}
 }
