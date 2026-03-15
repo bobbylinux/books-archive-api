@@ -9,32 +9,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "publishers", uniqueConstraints = @UniqueConstraint(
-        name = "unique_publishers_name",
-        columnNames = {"name"}
-    ))
-@Data
+@Table(name = "publishers", uniqueConstraints = @UniqueConstraint(name = "unique_publishers_name", columnNames = {
+        "name" }))
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Publisher {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name="name", nullable = false, length = 255)
+public class Publisher extends BaseEntity {
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
     @Column(name = "created_at", updatable = false, insertable = false)
-	private LocalDateTime createdAt;
-	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
-	@Column(name = "deleted_at")
-	private LocalDateTime deletedAt;
+    private LocalDateTime createdAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     public Publisher(String name) {
         this.name = name;
     }
-
 }
