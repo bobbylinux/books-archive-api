@@ -37,6 +37,8 @@ CREATE TABLE public.photos
 (
     id bigserial NOT NULL, 
     path character varying(500) NOT NULL,
+    file_name character varying(255) NOT NULL,
+    content_type character varying(50) NOT NULL,
     created_at timestamp without time zone NOT NULL DEFAULT current_timestamp,
     updated_at timestamp without time zone,
     deleted_at timestamp without time zone,
