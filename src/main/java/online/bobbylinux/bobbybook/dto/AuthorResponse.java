@@ -1,4 +1,9 @@
 package online.bobbylinux.bobbybook.dto;
 
-public record AuthorResponse(Long id, String first_name, String last_name) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record AuthorResponse(
+        @JsonProperty("id") Long id,
+        @JsonProperty("first_name") String firstName,
+        @JsonProperty("last_name") String lastName) {
 };

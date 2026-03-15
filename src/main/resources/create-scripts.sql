@@ -23,7 +23,7 @@ CREATE TABLE public.publishers
     created_at timestamp without time zone NOT NULL DEFAULT current_timestamp,
     updated_at timestamp without time zone,
     deleted_at timestamp without time zone,
-    CONSTRAINT pk_publishers PRIMARY KEY (id),
+    CONSTRAINT pk_publishers PRIMARY KEY (id)
 );
 
 CREATE UNIQUE INDEX unique_publishers_name
@@ -33,3 +33,19 @@ WHERE deleted_at IS NULL;
 ALTER TABLE IF EXISTS public.publishers
     OWNER to books_archive;
 
+CREATE TABLE public.photos
+(
+    id bigserial NOT NULL, 
+    path character varying(500) NOT NULL,
+    created_at timestamp without time zone NOT NULL DEFAULT current_timestamp,
+    updated_at timestamp without time zone,
+    deleted_at timestamp without time zone,
+    CONSTRAINT pk_photos PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX unique_photo_path
+ON photos (path)
+WHERE deleted_at IS NULL;
+
+ALTER TABLE IF EXISTS public.photos
+    OWNER to books_archive;

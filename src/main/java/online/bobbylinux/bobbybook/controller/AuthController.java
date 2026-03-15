@@ -1,6 +1,5 @@
 package online.bobbylinux.bobbybook.controller;
 
-
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import jakarta.validation.Valid;
 import online.bobbylinux.bobbybook.dto.LoginRequest;
 
 @RestController
@@ -25,15 +25,15 @@ public class AuthController {
 
     @Value("${keycloak.token-url}")
     private String keycloakTokenUrl;
-    
+
     @Value("${keycloak.client-secret}")
     private String clientSecret;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "password");
         body.add("client_id", "books-archive-client");
@@ -48,12 +48,11 @@ public class AuthController {
 
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity(
-                keycloakTokenUrl, entity, Map.class
-            );
+                    keycloakTokenUrl, entity, Map.class);
             return ResponseEntity.ok(response.getBody());
         } catch (HttpClientErrorException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Credenziali non valide");
+                    .body("Credenziali non valide");
         }
     }
 }
