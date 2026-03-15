@@ -13,7 +13,7 @@ import online.bobbylinux.bobbybook.entities.Publisher;
 
 public interface PublisherRepository extends JpaRepository<Publisher, Long> {
 
-    	@Query("SELECT p FROM Publisher p WHERE " + "LOWER(p.name) LIKE LOWER(CONCAT('%', :searchString, '%')) AND deletedAt IS NULL ORDER BY name")
+	@Query("SELECT p FROM Publisher p WHERE " + "LOWER(p.name) LIKE LOWER(CONCAT('%', :searchString, '%')) AND deletedAt IS NULL ORDER BY name")
 	List<Publisher> searchPublisher(@Param("searchString") String searchString);
 
     @Modifying

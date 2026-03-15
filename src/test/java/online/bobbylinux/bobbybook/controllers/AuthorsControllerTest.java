@@ -33,7 +33,7 @@ public class AuthorsControllerTest {
 
 	@Value("${api.prefix}")
     private String apiPrefix;
-@Test
+	@Test
 	@WithMockUser(username = "test", roles = { "USER" })
 	void testGetAuthor() throws Exception {
 		AuthorResponse author = new AuthorResponse(1L, "Stephen", "King");

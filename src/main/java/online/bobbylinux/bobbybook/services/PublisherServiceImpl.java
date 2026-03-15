@@ -19,7 +19,8 @@ public class PublisherServiceImpl implements PublisherService{
 
     @Override
     public List<PublisherResponse> getAllPublishers() {
-        throw new UnsupportedOperationException("Unimplemented method 'getAllPublishers'");
+        List<Publisher> publishers = publisherRepository.getAllPublishers();
+        return publishers.stream().map(a -> new PublisherResponse(a.getId(), a.getName())).toList();
     }
 
     @Override
@@ -30,22 +31,39 @@ public class PublisherServiceImpl implements PublisherService{
 
     @Override
     public List<PublisherResponse> searchPublisher(String searchString) {
-        throw new UnsupportedOperationException("Unimplemented method 'searchPublisher'");
+        List<Publisher> publishers = publisherRepository.searchPublisher(searchString);
+        return publishers.stream().map(a -> new PublisherResponse(a.getId(), a.getName())).toList();
     }
 
     @Override
     public PublisherResponse createPublisher(String name) {
-        throw new UnsupportedOperationException("Unimplemented method 'createPublisher'");
+        Publisher publisher = new Publisher(name);
+        Publisher savedPublisher = this.publisherRepository.save(publisher);
+        return new PublisherResponse(savedPublisher.getId(), savedPublisher.getName());
     }
 
     @Override
     public PublisherResponse updatePublisher(Long id, String name) throws NotFoundException {
-        throw new UnsupportedOperationException("Unimplemented method 'updatePublisher'");
+        if (id == null) {
+			throw new IllegalArgumentException("Publisher Id to modify can't be null");
+		}
+		Optional<Publisher> publisher = publisherRepository.findById(id);
+		if (publisher.isEmpty()) {
+			throw new NotFoundException();
+		}
+		Publisher updatedPublisher = publisher.get();
+		updatedPublisher.setName(name);
+		Publisher savedPublisher = publisherRepository.save(updatedPublisher);
+		return new PublisherResponse(savedPublisher.getId(), savedPublisher.getName());
     }
 
-    @Override
+   
+   @Override
     public void deletePublisher(Long id) throws NotFoundException {
-        throw new UnsupportedOperationException("Unimplemented method 'deletePublisher'");
+        if (id == null) {
+			throw new IllegalArgumentException("Publisher Id to delete can't be null");
+		}
+		publisherRepository.deleteById(id);
     }
 
 }

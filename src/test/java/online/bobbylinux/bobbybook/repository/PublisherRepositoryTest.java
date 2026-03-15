@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import jakarta.transaction.Transactional;
-import online.bobbylinux.bobbybook.entities.Author;
 import online.bobbylinux.bobbybook.entities.Publisher;
 
 @DataJpaTest

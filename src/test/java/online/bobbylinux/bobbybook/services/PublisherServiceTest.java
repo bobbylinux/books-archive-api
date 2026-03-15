@@ -20,11 +20,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
-import online.bobbylinux.bobbybook.dto.AuthorResponse;
 import online.bobbylinux.bobbybook.dto.PublisherResponse;
-import online.bobbylinux.bobbybook.entities.Author;
 import online.bobbylinux.bobbybook.entities.Publisher;
-import online.bobbylinux.bobbybook.repository.AuthorRepository;
 import online.bobbylinux.bobbybook.repository.PublisherRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,8 +59,6 @@ public class PublisherServiceTest {
         publisher02.setId(3L);
         Publisher publisher04 = new Publisher("Nerini");
         publisher02.setId(4L);
-        
-        
         
         List<Publisher> authors = new ArrayList<Publisher>();
         authors.add(publisher03);
@@ -125,47 +120,45 @@ public class PublisherServiceTest {
         verify(publisherRepository, times(1)).getAllPublishers();
 	}
 
-	// @Test
-	// void testCreatePublisher() {
-	// 	Publisher publisher = new Publisher("Sellerio");
-	// 	when(publisherRepository.save(any(Publisher.class))).thenReturn(publisher);
+	@Test
+	void testCreatePublisher() {
+		Publisher publisher = new Publisher("Einaudi");
+		when(publisherRepository.save(any(Publisher.class))).thenReturn(publisher);
 
-	// 	PublisherResponse result = publisherService.createAuthor("Stephen", "King");
+		PublisherResponse result = publisherService.createPublisher("Einaudi");
 
-	// 	assertNotNull(result);
-	// 	assertEquals(result.first_name(), "Stephen");
-	// 	assertEquals(result.last_name(), "King");
+		assertNotNull(result);
+		assertEquals(result.name(), "Einaudi");
 
-	// 	verify(authorRepository, times(1)).save(any(Author.class));
-	// }
+		verify(publisherRepository, times(1)).save(any(Publisher.class));
+	}
 	
-	// @Test
-	// void testUpdateAuthor() throws NotFoundException {
-	//     Long id = 1L;
-    //     Author existingAuthor = new Author("Stephen", "King");
-    //     existingAuthor.setId(id);
+	@Test
+	void testUpdatePublisher() throws NotFoundException {
+	    Long id = 1L;
+        Publisher existingPublisher = new Publisher("Sellerioo");
+        existingPublisher.setId(id);
         
-    //     when(authorRepository.findById(id)).thenReturn(Optional.of(existingAuthor));
-    //     when(authorRepository.save(any(Author.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(publisherRepository.findById(id)).thenReturn(Optional.of(existingPublisher));
+        when(publisherRepository.save(any(Publisher.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-    //     AuthorResponse updatedAuthor = authorService.updateAuthor(id, "Stephanus", "Kingston");
+        PublisherResponse updatedPublisher = publisherService.updatePublisher(id, "Sellerio");
 
-    //     assertNotNull(updatedAuthor);
-    //     assertEquals("Stephanus", updatedAuthor.first_name());
-    //     assertEquals("Kingston", updatedAuthor.last_name());
+        assertNotNull(updatedPublisher);
+        assertEquals("Sellerio", updatedPublisher.name());
 
-    //     verify(authorRepository, times(1)).findById(id);
-    //     verify(authorRepository, times(1)).save(existingAuthor);		
-	// }
+        verify(publisherRepository, times(1)).findById(id);
+        verify(publisherRepository, times(1)).save(existingPublisher);		
+	}
 
-	// @Test
-	// void testDeleteAuthor() {
-	// 	Long id = 1L;
+	@Test
+	void testDeleteAuthor() throws NotFoundException {
+		Long id = 1L;
 		
-	// 	authorService.deleteAuthor(id);
+		publisherService.deletePublisher(id);
 		
-	// 	verify(authorRepository).deleteById(id);
-	//     verifyNoMoreInteractions(authorRepository);
-	// }
+		verify(publisherRepository).deleteById(id);
+	    verifyNoMoreInteractions(publisherRepository);
+	}
 	
 }
