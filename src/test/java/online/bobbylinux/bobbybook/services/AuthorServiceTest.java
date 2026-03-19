@@ -155,7 +155,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    void testDeleteAuthor() {
+    void testDeleteAuthor() throws NotFoundException {
         Long id = 1L;
 
         authorService.deleteAuthor(id);

@@ -1,6 +1,7 @@
 package online.bobbylinux.bobbybook.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +25,17 @@ public class PhotoRepositoryTest {
     @Test
     @Transactional
     void testGetPhoto() {
-        Photo photo01 = new Photo("/test/photo01/", "photo-cover-01.png", ContentType.IMAGE_PNG);
-        Photo photo02 = new Photo("/test/photo02/", "photo-cover-02.jpg", ContentType.IMAGE_JPEG);
+        Photo photo = new Photo(
+                "https://s3.bobbylinux.online/bobbybook-covers/photos/uuid_test.jpg",
+                "test.jpg",
+                ContentType.IMAGE_JPEG);
+        Photo savedPhoto = photoRepository.save(photo);
 
-        List<Photo> photos = photoRepository.saveAll(List.of(photo01, photo02));
+        Optional<Photo> result = photoRepository.findById(savedPhoto.getId());
 
-        Optional<Photo> result = photoRepository.findById(photos.get(0).getId());
-        assertEquals("/test/photo01/", result.get().getPath());
-        assertEquals("photo-cover-01.png", result.get().getFileName());
-        assertEquals(ContentType.IMAGE_PNG, result.get().getContentType());
+        assertFalse(result.isEmpty());
+        assertEquals(result.get().getPath(), photo.getPath());
+        assertEquals(result.get().getFileName(), "test.jpg");
+        assertEquals(result.get().getContentType(), ContentType.IMAGE_JPEG);
     }
 }
